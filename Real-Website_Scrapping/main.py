@@ -21,13 +21,19 @@ print("Filtering the list as per you unfamiliar skills",unfamiliar_skill,"\n")
 soup = BeautifulSoup(html_text,'lxml')
 jobs = soup.find_all('li',class_="clearfix job-bx wht-shd-bx")
 for job in jobs:
+    flag = True
     published_date = job.find("span",class_="sim-posted").span.text
     if "few" in published_date:
         company_name = job.find("h3",class_="joblist-comp-name").text.replace(" ","")
         skills = job.find('span',class_="srp-skills").text.replace(" ","")
         link = job.header.h2.a['href']
-        if unfm_s not in skills:
+        for i in unfm_s:
+            if i not in skills:
+                flag = True
+            else:
+                flag = False
+                break
+        if flag == True:
             print(f"""Compnay Names: {company_name.strip()}\nSkills: {skills.strip()}\nLink:{link}""")
             print("\n")
-                
         
